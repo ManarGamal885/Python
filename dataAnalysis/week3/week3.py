@@ -2,8 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt 
 import seaborn as sns
-
-
+from scipy import stats
 ## 1) Importing data from module
 
 path='https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-DA0101EN-SkillsNetwork/labs/Data%20files/automobileEDA.csv'
@@ -128,3 +127,25 @@ plt.xticks(rotation=90)
 
 fig.colorbar(im)
 plt.show()
+
+## 5) Correlation and Causation
+
+##Let's calculate the Pearson Correlation Coefficient and P-value of 'wheel-base' and 'price
+pearson_coef, p_value=stats.pearsonr(df['wheel-base'], df['price'])
+print("The Pearson Correlation Coefficient is", pearson_coef, " with a P-value of P =", p_value)
+
+## 6) ANOVA
+#If our price variable is strongly correlated with the variable we are 
+# analyzing, we expect ANOVA to return a sizeable F-test score and a small p-value.
+# ANOVA analyzes the difference between different groups of the same variable, 
+#To see if different types of 'drive-wheels' impact 'price', we group the data.
+grouped_test2= df_gptest[['drive-wheels', 'price']].groupby(['drive-wheels'])
+grouped_test2.head(2)
+df_gptest
+
+#We can use the function 'f_oneway' in the module 'stats' to obtain the F-test score and P-value.
+
+#ANOVA
+f_val, p_val = stats.f_oneway(grouped_test2.get_group('fwd')['price'],grouped_test2.get_group('rwd')['price'], grouped_test2.get_group('4wd')['price'])
+ 
+print( "ANOVA results: F=", f_val, ", P =", p_val)   
