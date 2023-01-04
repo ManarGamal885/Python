@@ -5,7 +5,7 @@ import seaborn as sns
 from scipy import stats
 ## 1) Importing data from module
 
-path='https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-DA0101EN-SkillsNetwork/labs/Data%20files/automobileEDA.csv'
+path='C:\Users\msii\OneDrive\Desktop\automobileEDA.csv'
 df =pd.read_csv(path)
 print(df.head(5))
 
