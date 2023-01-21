@@ -105,3 +105,57 @@ data = {
 }
 df_houses = pd.DataFrame(data)
 print(df_houses)
+
+#1.2. Preparing Mexico Data
+#Task1.2.1
+df1 = pd.read_csv("data/mexico-real-estate-1.csv")
+df2 = pd.read_csv("data/mexico-real-estate-2.csv")
+df3 = pd.read_csv("data/mexico-real-estate-3.csv")
+
+#Task1.2.2
+#clean df1
+df1.shape
+#return no. of rows and no. of cols
+df1.info()
+
+#Task1.2.3
+#Remove NaN values
+df1.dropna(inplace = True)
+df1["price_usd"] = (
+    df1["price_usd"]
+    .str.replace("$", "", regex = False)
+    .str.replace(",", "")
+    .
+    astype(float)
+)
+
+#Task1.2.4
+#clean df2
+#Remove 'Nan'
+df2.dropna(inplace = True)
+#Create "Price_usd" col
+df2["price_usd"] = (df2["price_mxn"] / 19).round(2)
+#Drop a col
+df2.drop(columns=["price_mxn"], inplace = True)
+df2.head()
+
+#Task1.2.5
+#clean df3
+#expand to make it in columns instade of a list
+df3[["lat", "lon"]] = df3["lat-lon"].str.split(",", expand = True)
+df3.head()
+
+#Task1.2.6
+df3["state"] = df3["place_with_parent_names"].str.split("|", expand = True)[2]
+df3.drop(columns=["place_with_parent_names","lat-lon"], inplace = True )
+df3.head()
+
+#Task1.2.7
+#axis = 0 vertically =1 horizontally
+df = pd.concat([df1, df2, df3])
+print(df.shape)
+df.head()
+
+#Task1.2.8
+#save DF
+df.to_csv("data/mexico-real-estate-clean.csv", index = False)
